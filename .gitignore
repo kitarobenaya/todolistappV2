@@ -37,4 +37,4 @@ Thumbs.db
 # Optional lock files (pilih salah satu, jangan dua-duanya)
 # package-lock.json     # pakai ini kalau npm
 # yarn.lock             # pakai ini kalau yarn
-pnpm-lock.yaml        # pakai ini kalau pnpm
+pnpm-lock.yaml
