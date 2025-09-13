@@ -2,8 +2,10 @@
 @import "tailwindcss";
 
 @theme {
+  --color-text-primary: #424242;
+  --color-accent: #849F90;
+  
   --animate-title: fadeInDown 900ms ease-in-out;
-
   @keyframes fadeInDown {
     0% {
       opacity: 0;
@@ -14,4 +16,18 @@
       transform: translateY(0);
     }
   }
+}
+
+span.add-text::before {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background-color: #424242;
+  position: absolute;
+  bottom: 0;
+  transition: width 0.5s ease-in-out;
+}
+
+button.addButton:hover span.add-text::before {
+  width: 100%;
 }
