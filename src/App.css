@@ -4,6 +4,7 @@
 @theme {
   --color-text-primary: #424242;
   --color-accent: #849F90;
+  --color-button-accent: #F0D49D;
   
   --animate-title: fadeInDown 900ms ease-in-out;
   @keyframes fadeInDown {
