@@ -1,0 +1,116 @@
+// ScheduleItem.jsx
+import { useState, useEffect } from "react";
+import RightArrow from './../img/right-arrow.png';
+import LeftArrow from './../img/left-arrow.png';
+
+const ANIM_DURATION = 700; // ms
+
+export default function ScheduleItem({ item, onCheck, onContOpen }) {
+  // animasi mount/unmount
+  const [show, setShow] = useState(item.isContOpen);
+  const [render, setRender] = useState(item.isContOpen);
+
+  useEffect(() => {
+    if (item.isContOpen) {
+      setRender(true);
+      setShow(true);
+    } else {
+      setShow(false);
+      const t = setTimeout(() => setRender(false), ANIM_DURATION);
+      return () => clearTimeout(t);
+    }
+  }, [item.isContOpen]);
+
+  // className helpers (Tailwind)
+  const cardBg = item.checked ? 'bg-white/60' : 'bg-white';
+  const textLine = item.checked ? 'line-through' : '';
+  const actionClass = show
+    ? 'animate-controlIn'
+    : 'pointer-events-none animate-controlOut';
+
+  return (
+    <div className="size-fit flex justify-center items-center flex-col relative">
+      {/* Action panel - animasi mount/unmount */}
+      {render && (
+        <aside
+          className={`
+            schedule-actions flex justify-center items-center flex-col gap-2
+            bg-text-primary p-2 rounded-br-xl rounded-tr-xl
+            absolute right-[-2.4rem] shadow-2xl transition-all duration-300
+            ${actionClass}
+          `}
+        >
+          {/* checkbox */}
+          <div className="inline-flex items-center">
+            <label className="flex items-center cursor-pointer relative">
+              <input
+                type="checkbox"
+                className="peer h-5 w-5 cursor-pointer appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-green-500 checked:border-green-500"
+                checked={item.checked}
+                onChange={() => onCheck(item.id)}
+              />
+              <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3.5 w-3.5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  strokeWidth="1"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+            </label>
+          </div>
+
+          {/* delete & edit */}
+          <button
+            type="button"
+            className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center"
+          >
+            <div className="w-3 h-1 bg-white absolute rotate-45" />
+            <div className="w-3 h-1 bg-white absolute -rotate-45" />
+          </button>
+          <button className="edit-button font-[Montserrat] text-white hover:underline">
+            Edit
+          </button>
+        </aside>
+      )}
+
+      {/* Card utama */}
+      <article
+        className={`schedule-card bg-white w-[96%] h-fit p-1 rounded-2xl shadow-xl flex justify-center items-center relative ${cardBg}`}
+      >
+        <div className="schedule-content p-4">
+          <header>
+            <h2 className={`schedule-title font-[Montserrat] font-bold text-xl text-text-primary mb-2 ${textLine}`}>
+              {item.title}
+            </h2>
+            <time className={`schedule-time font-[Montserrat] text-text-secondary mb-4 ${textLine}`}>
+              {item.time}
+            </time>
+          </header>
+          <p className={`schedule-description font-[Montserrat] text-text-secondary max-w-full break-words ${textLine}`}>
+            {item.description}
+          </p>
+        </div>
+
+        {/* Tombol buka/tutup panel */}
+        <div
+          className="schedule-control flex items-center size-fit rounded-full bg-button-accent p-2 hover:cursor-pointer hover:bg-[#F4E2BB] transition-colors duration-500 ease-in-out absolute right-0.5 z-10"
+          onClick={() => onContOpen(item.id)}
+        >
+          <img
+            src={item.isContOpen ? LeftArrow : RightArrow}
+            alt="arrow"
+            className="size-5 select-none"
+          />
+        </div>
+      </article>
+    </div>
+  );
+}

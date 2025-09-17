@@ -17,6 +17,26 @@
       transform: translateY(0);
     }
   }
+
+  --animate-controlIn: slideIn 700ms ease;
+  @keyframes slideIn {
+    0% {
+      transform: translateX(-50px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  --animate-controlOut: slideOut 700ms ease;
+  @keyframes slideOut {
+    0% {
+      transform: translateX(0px);
+    }
+    100% {
+      transform: translateX(-50px);
+    }
+  }
 }
 
 span.add-text::before {
