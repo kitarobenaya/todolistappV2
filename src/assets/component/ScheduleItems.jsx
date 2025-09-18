@@ -22,7 +22,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
   }, [item.isContOpen]);
 
   // className helpers (Tailwind)
-  const cardBg = item.checked ? "bg-white/60" : "bg-white";
+  const cardBg = item.checked ? "bg-emerald-200" : "bg-white";
   const textLine = item.checked ? "line-through" : "";
   const actionClass = show
     ? "animate-controlIn"
@@ -30,7 +30,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
 
   return (
     <div
-      className="schedule-container size-fit flex justify-center items-center flex-col relative"
+      className="schedule-container size-full flex justify-center items-center flex-col relative "
       role="listitem"
     >
       {/* Action panel */}
@@ -80,10 +80,10 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
           </div>
 
           {/* Action buttons */}
-          <div className="action-buttons flex flex-col gap-2">
+          <div className="action-buttons flex flex-col items-center gap-2 ">
             <button
               type="button"
-              className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center"
+              className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center cursor-pointer"
               aria-label="Delete schedule item"
             >
               <span className="sr-only">Delete</span>
@@ -98,7 +98,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
             </button>
             <button
               type="button"
-              className="edit-button font-[Montserrat] text-white hover:underline"
+              className="edit-button font-[Montserrat] text-white hover:underline cursor-pointer"
               aria-label="Edit schedule item"
             >
               Edit
@@ -109,7 +109,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
 
       {/* Schedule card */}
       <article
-        className={`schedule-card bg-white w-[96%] h-fit p-1 rounded-2xl shadow-xl flex justify-center items-center relative ${cardBg}`}
+        className={`schedule-card w-[96%] h-fit p-1 rounded-2xl shadow-xl flex items-center relative ${cardBg}`}
         aria-labelledby={`schedule-title-${item.id}`}
       >
         <div className="schedule-content p-4">
@@ -130,7 +130,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
           <p
             className={`schedule-description font-[Montserrat] text-text-secondary max-w-full break-words ${textLine}`}
           >
-            {item.description}
+            {item.desc}
           </p>
         </div>
 

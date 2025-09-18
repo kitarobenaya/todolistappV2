@@ -5,7 +5,7 @@ export default function InputForm({setShowForm, stateItems}) {
         uid: crypto.randomUUID(),
         title: "",
         date: "",
-        description: ""
+        desc: ""
     });
 
     function handleSubmit(event) {

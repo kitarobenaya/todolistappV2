@@ -6,22 +6,31 @@ import "./App.css";
 export default function App() {
   const [schedules, setSchedules] = useState(JSON.parse(localStorage.getItem("schedules")) || []);
   const [showInputForm, setShowInputForm] = useState(false);
-  // const [items, setItems] = useState(JSON.parse(localStorage.getItem("items")) || []);
+  const [items, setItems] = useState(
+    [{id: 1, title: "Sample Task", time: "10.00 - 12.00", desc: "tesasjndaklkca slkdnladal lkansdlsand lnsdlan ljandljas jandlj", checked: false, isContOpen: false},
+    {id: 1, title: "Sample Task", time: "10.00 - 12.00", checked: false, isContOpen: false},
+    {id: 2, title: "Another Task",time: "10.00 - 12.00", checked: true, isContOpen: false}]);
 
-  // const handleCheck = (id) =>
-  //   setItems(prev =>
-  //     prev.map(it =>
-  //       it.id === id ? { ...it, checked: !it.checked } : it
-  //     )
-  //   );
+  const handleCheck = (id) =>
+    setItems(prev =>
+      prev.map(it =>
+        it.id === id ? { ...it, checked: !it.checked } : it
+      )
+    );
 
-  // const handleContOpen = (id) =>
-  //   setItems(prev =>
-  //     prev.map(it => ({
-  //       ...it,
-  //       isContOpen: it.id === id ? !it.isContOpen : false
-  //     }))
-  //   );
+  const handleContOpen = (id) =>
+    setItems(prev =>
+      prev.map(it => ({
+        ...it,
+        isContOpen: it.id === id ? !it.isContOpen : false
+      }))
+    );
+
+  const handleDeleteList = (uid) => {
+    const updatedSchedules = schedules.filter(schedule => schedule.uid !== uid);
+    setSchedules(updatedSchedules);
+    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
+  }
 
   return (
     <>
@@ -33,7 +42,7 @@ export default function App() {
         </h1>
       </header>
 
-      <main className="schedule-manager size-full mt-16" role="main">
+      <main className="schedule-manager size-full mt-8" role="main">
         <div className="controls size-full flex justify-end mb-8">
           <button 
             type="button"
@@ -55,8 +64,9 @@ export default function App() {
           {schedules.map(schedule => {
             const hari = new Date(schedule.date).toLocaleDateString('id-ID', { weekday: 'long' });  
             return (
-            <article 
-              className="schedule-day w-[28rem] h-fit bg-accent rounded-2xl flex flex-col gap-6 schedules-center p-2"
+            <article
+              key={schedule.uid}
+              className="schedule-day w-[28rem] h-fit bg-accent rounded-2xl flex flex-col gap-6 schedules-center p-2 relative"
               aria-labelledby={schedule.uid}
             >
               <header>
@@ -66,17 +76,36 @@ export default function App() {
                 >
                   <time dateTime={schedule.date}>{hari+ ", " +schedule.date}</time>
                 </h2>
+                <div className="action-button size-fit flex justify-end items-center absolute top-4 right-4">
+                  {/* Delete button */}
+                  <button
+                    type="button"
+                    className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center cursor-pointer"
+                    onClick={() => handleDeleteList(schedule.uid)}
+                    aria-label="Delete schedule list"
+                  >
+                    <span className="sr-only">Delete</span>
+                    <div
+                      className="w-3 h-1 bg-white absolute rotate-45"
+                      aria-hidden="true"
+                    />
+                    <div
+                      className="w-3 h-1 bg-white absolute -rotate-45"
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
               </header>
 
               <div className="schedule-items flex flex-col gap-6" role="list">
-                {/* {items.map(item => (
+                {items.map(item => (
                   <ScheduleItem
                     key={item.id}
                     item={item}
                     onCheck={handleCheck}
                     onContOpen={handleContOpen}
                   />
-                ))} */}
+                ))}
               </div>
 
               <footer className="controls w-full h-fit flex justify-center items-center mb-2">

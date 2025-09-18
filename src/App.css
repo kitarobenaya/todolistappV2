@@ -40,6 +40,10 @@
   }
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
 span.add-schedule-btn-text::before {
   content: "";
   width: 0%;
