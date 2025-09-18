@@ -5,6 +5,7 @@
   --color-text-primary: #424242;
   --color-accent: #849F90;
   --color-button-accent: #F0D49D;
+  --color-maroon: #A86F6F;
   
   --animate-title: fadeInDown 900ms ease-in-out;
   @keyframes fadeInDown {
@@ -39,7 +40,7 @@
   }
 }
 
-span.add-text::before {
+span.add-schedule-btn-text::before {
   content: "";
   width: 0%;
   height: 2px;
@@ -49,6 +50,6 @@ span.add-text::before {
   transition: width 0.5s ease-in-out;
 }
 
-button.addButton:hover span.add-text::before {
+button.add-schedule-btn:hover span.add-schedule-btn-text::before {
   width: 100%;
 }

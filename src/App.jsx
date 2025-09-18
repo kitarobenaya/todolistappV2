@@ -1,92 +1,102 @@
 import { useState } from "react";
 import ScheduleItem from "./assets/component/ScheduleItems.jsx";
+import InputForm from "./assets/component/InputForm.jsx";
 import "./App.css";
 
-const initialData = [
-  {
-    id: crypto.randomUUID(),
-    title: "Sample Schedule",
-    time: "10:00 AM - 11:00 AM",
-    description: "This is a sample description of the schedule item.",
-    checked: false,
-    isContOpen: false
-  },
-  {
-    id: crypto.randomUUID(),
-    title: "Sample Schedule 2",
-    time: "10:00 AM - 11:00 AM",
-    description: "This is a sample description of the schedule item.",
-    checked: false,
-    isContOpen: false
-  }
-];
-
 export default function App() {
-  const [items, setItems] = useState(initialData);
+  const [schedules, setSchedules] = useState(JSON.parse(localStorage.getItem("schedules")) || []);
+  const [showInputForm, setShowInputForm] = useState(false);
+  // const [items, setItems] = useState(JSON.parse(localStorage.getItem("items")) || []);
 
-  const handleCheck = (id) =>
-    setItems(prev =>
-      prev.map(it =>
-        it.id === id ? { ...it, checked: !it.checked } : it
-      )
-    );
+  // const handleCheck = (id) =>
+  //   setItems(prev =>
+  //     prev.map(it =>
+  //       it.id === id ? { ...it, checked: !it.checked } : it
+  //     )
+  //   );
 
-  const handleContOpen = (id) =>
-    setItems(prev =>
-      prev.map(it => ({
-        ...it,
-        isContOpen: it.id === id ? !it.isContOpen : false
-      }))
-    );
+  // const handleContOpen = (id) =>
+  //   setItems(prev =>
+  //     prev.map(it => ({
+  //       ...it,
+  //       isContOpen: it.id === id ? !it.isContOpen : false
+  //     }))
+  //   );
 
   return (
     <>
-      <header>
-        <h1 className="text-4xl font-bold text-center font-[Montserrat] mt-4 text-text-primary animate-title underline underline-offset-8">
+      {showInputForm && <InputForm setShowForm={setShowInputForm} stateItems={setSchedules} />}
+
+      <header className="app-header mt-4">
+        <h1 className="text-4xl font-bold text-center font-[Montserrat] text-text-primary animate-title underline underline-offset-8">
           Schedule Your Day with Kitaro's To-Do List App
         </h1>
       </header>
 
-      <main className="size-full mt-16">
-        <section className="size-full flex justify-end mb-8">
-          <button className="addButton bg-accent p-2 mr-8 rounded-xl hover:bg-[#6E867B] hover:cursor-pointer">
-            <span className="add-text flex justify-center size-fit font-[Montserrat] font-bold text-text-primary relative">
+      <main className="schedule-manager size-full mt-16" role="main">
+        <div className="controls size-full flex justify-end mb-8">
+          <button 
+            type="button"
+            className="add-schedule-btn bg-accent p-2 mr-8 rounded-xl hover:bg-[#6E867B] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 items-center"
+            aria-label="Add new schedule"
+            onClick={() => setShowInputForm(true)}
+          >
+            <span className="add-schedule-btn-text font-[Montserrat] font-bold text-text-primary relative flex justify-center">
               Add Schedule
             </span>
           </button>
-        </section>
+        </div>
 
-        <section className="schedule-list size-full flex flex-row gap-8 justify-center items-center mb-16 flex-wrap">
-          <article className="tanggal-schedule w-[28rem] h-fit bg-accent rounded-2xl flex flex-col gap-6 items-center p-2">
-            <h1 className="text-center font-bold font-[Montserrat] text-2xl text-text-primary">
-              Senin, 19 Juli 2025
-            </h1>
+        <section 
+          className="schedule-list size-full flex flex-row gap-8 justify-center items-center mb-16 flex-wrap"
+          aria-label="Schedule lists by date"
+        >
+          {/* schedule list */}
+          {schedules.map(schedule => {
+            const hari = new Date(schedule.date).toLocaleDateString('id-ID', { weekday: 'long' });  
+            return (
+            <article 
+              className="schedule-day w-[28rem] h-fit bg-accent rounded-2xl flex flex-col gap-6 schedules-center p-2"
+              aria-labelledby={schedule.uid}
+            >
+              <header>
+                <h2 
+                  id="date-heading-1"
+                  className="text-center font-bold font-[Montserrat] text-2xl text-text-primary"
+                >
+                  <time dateTime={schedule.date}>{hari+ ", " +schedule.date}</time>
+                </h2>
+              </header>
 
-            {items.map(item => (
-              <ScheduleItem
-                key={item.id}
-                item={item}
-                onCheck={handleCheck}
-                onContOpen={handleContOpen}
-              />
-            ))}
-          </article>
-          <article className="tanggal-schedule w-[28rem] h-fit bg-accent rounded-2xl flex flex-col gap-6 items-center p-2">
-            <h1 className="text-center font-bold font-[Montserrat] text-2xl text-text-primary">
-              Senin, 19 Juli 2025
-            </h1>
+              <div className="schedule-items flex flex-col gap-6" role="list">
+                {/* {items.map(item => (
+                  <ScheduleItem
+                    key={item.id}
+                    item={item}
+                    onCheck={handleCheck}
+                    onContOpen={handleContOpen}
+                  />
+                ))} */}
+              </div>
 
-            {items.map(item => (
-              <ScheduleItem
-                key={item.id}
-                item={item}
-                onCheck={handleCheck}
-                onContOpen={handleContOpen}
-              />
-            ))}
-          </article>
+              <footer className="controls w-full h-fit flex justify-center items-center mb-2">
+                <button
+                  type="button"
+                  className="add-schedule-btn w-full bg-maroon p-2 rounded-xl hover:bg-[#865555] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 justify-center items-center"
+                  aria-label="Add new schedule"
+                  onClick={() => setShowInputForm(true)}
+                >
+                  <span className="add-task-btn-text font-[Montserrat] font-bold text-white relative flex justify-center">
+                    Add Task
+                  </span>
+                </button>
+              </footer>
+            </article>
+          )})}
+
         </section>
       </main>
+
     </>
   );
 }

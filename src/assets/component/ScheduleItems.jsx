@@ -1,7 +1,7 @@
 // ScheduleItem.jsx
 import { useState, useEffect } from "react";
-import RightArrow from './../img/right-arrow.png';
-import LeftArrow from './../img/left-arrow.png';
+import RightArrow from "./../img/right-arrow.png";
+import LeftArrow from "./../img/left-arrow.png";
 
 const ANIM_DURATION = 700; // ms
 
@@ -22,34 +22,46 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
   }, [item.isContOpen]);
 
   // className helpers (Tailwind)
-  const cardBg = item.checked ? 'bg-white/60' : 'bg-white';
-  const textLine = item.checked ? 'line-through' : '';
+  const cardBg = item.checked ? "bg-white/60" : "bg-white";
+  const textLine = item.checked ? "line-through" : "";
   const actionClass = show
-    ? 'animate-controlIn'
-    : 'pointer-events-none animate-controlOut';
+    ? "animate-controlIn"
+    : "pointer-events-none animate-controlOut";
 
   return (
-    <div className="size-fit flex justify-center items-center flex-col relative">
-      {/* Action panel - animasi mount/unmount */}
+    <div
+      className="schedule-container size-fit flex justify-center items-center flex-col relative"
+      role="listitem"
+    >
+      {/* Action panel */}
       {render && (
         <aside
           className={`
-            schedule-actions flex justify-center items-center flex-col gap-2
-            bg-text-primary p-2 rounded-br-xl rounded-tr-xl
-            absolute right-[-2.4rem] shadow-2xl transition-all duration-300
-            ${actionClass}
-          `}
+          schedule-actions flex justify-center items-center flex-col gap-2
+          bg-text-primary p-2 rounded-br-xl rounded-tr-xl
+          absolute right-[-2.4rem] shadow-2xl transition-all duration-300
+          ${actionClass}
+        `}
+          aria-label="Schedule item actions"
         >
-          {/* checkbox */}
-          <div className="inline-flex items-center">
-            <label className="flex items-center cursor-pointer relative">
+          {/* Completion status */}
+          <div className="completion-status inline-flex items-center">
+            <label
+              className="flex items-center cursor-pointer relative"
+              htmlFor={`complete-${item.id}`}
+            >
               <input
                 type="checkbox"
+                id={`complete-${item.id}`}
                 className="peer h-5 w-5 cursor-pointer appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-green-500 checked:border-green-500"
                 checked={item.checked}
                 onChange={() => onCheck(item.id)}
+                aria-label="Mark as complete"
               />
-              <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              <span
+                className="checkmark absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                aria-hidden="true"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-3.5 w-3.5"
@@ -67,49 +79,78 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
             </label>
           </div>
 
-          {/* delete & edit */}
-          <button
-            type="button"
-            className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center"
-          >
-            <div className="w-3 h-1 bg-white absolute rotate-45" />
-            <div className="w-3 h-1 bg-white absolute -rotate-45" />
-          </button>
-          <button className="edit-button font-[Montserrat] text-white hover:underline">
-            Edit
-          </button>
+          {/* Action buttons */}
+          <div className="action-buttons flex flex-col gap-2">
+            <button
+              type="button"
+              className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center"
+              aria-label="Delete schedule item"
+            >
+              <span className="sr-only">Delete</span>
+              <div
+                className="w-3 h-1 bg-white absolute rotate-45"
+                aria-hidden="true"
+              />
+              <div
+                className="w-3 h-1 bg-white absolute -rotate-45"
+                aria-hidden="true"
+              />
+            </button>
+            <button
+              type="button"
+              className="edit-button font-[Montserrat] text-white hover:underline"
+              aria-label="Edit schedule item"
+            >
+              Edit
+            </button>
+          </div>
         </aside>
       )}
 
-      {/* Card utama */}
+      {/* Schedule card */}
       <article
         className={`schedule-card bg-white w-[96%] h-fit p-1 rounded-2xl shadow-xl flex justify-center items-center relative ${cardBg}`}
+        aria-labelledby={`schedule-title-${item.id}`}
       >
         <div className="schedule-content p-4">
           <header>
-            <h2 className={`schedule-title font-[Montserrat] font-bold text-xl text-text-primary mb-2 ${textLine}`}>
+            <h2
+              id={`schedule-title-${item.id}`}
+              className={`schedule-title font-[Montserrat] font-bold text-xl text-text-primary mb-2 ${textLine}`}
+            >
               {item.title}
             </h2>
-            <time className={`schedule-time font-[Montserrat] text-text-secondary mb-4 ${textLine}`}>
+            <time
+              dateTime={item.time}
+              className={`schedule-time font-[Montserrat] text-text-secondary mb-4 block ${textLine}`}
+            >
               {item.time}
             </time>
           </header>
-          <p className={`schedule-description font-[Montserrat] text-text-secondary max-w-full break-words ${textLine}`}>
+          <p
+            className={`schedule-description font-[Montserrat] text-text-secondary max-w-full break-words ${textLine}`}
+          >
             {item.description}
           </p>
         </div>
 
-        {/* Tombol buka/tutup panel */}
-        <div
+        {/* Toggle panel button */}
+        <button
+          type="button"
           className="schedule-control flex items-center size-fit rounded-full bg-button-accent p-2 hover:cursor-pointer hover:bg-[#F4E2BB] transition-colors duration-500 ease-in-out absolute right-0.5 z-10"
           onClick={() => onContOpen(item.id)}
+          aria-label={
+            item.isContOpen ? "Close actions panel" : "Open actions panel"
+          }
+          aria-expanded={item.isContOpen}
         >
           <img
             src={item.isContOpen ? LeftArrow : RightArrow}
-            alt="arrow"
+            alt=""
             className="size-5 select-none"
+            aria-hidden="true"
           />
-        </div>
+        </button>
       </article>
     </div>
   );
