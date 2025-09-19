@@ -48,14 +48,14 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
           <div className="completion-status inline-flex items-center">
             <label
               className="flex items-center cursor-pointer relative"
-              htmlFor={`complete-${item.id}`}
+              htmlFor={`complete-${item.uid}`}
             >
               <input
                 type="checkbox"
-                id={`complete-${item.id}`}
+                id={`complete-${item.uid}`}
                 className="peer h-5 w-5 cursor-pointer appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-green-500 checked:border-green-500"
                 checked={item.checked}
-                onChange={() => onCheck(item.id)}
+                onChange={() => onCheck(item.uid)}
                 aria-label="Mark as complete"
               />
               <span
@@ -110,21 +110,21 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
       {/* Schedule card */}
       <article
         className={`schedule-card w-[96%] h-fit p-1 rounded-2xl shadow-xl flex items-center relative ${cardBg}`}
-        aria-labelledby={`schedule-title-${item.id}`}
+        aria-labelledby={`schedule-title-${item.uid}`}
       >
         <div className="schedule-content p-4">
           <header>
             <h2
-              id={`schedule-title-${item.id}`}
+              id={`schedule-title-${item.uid}`}
               className={`schedule-title font-[Montserrat] font-bold text-xl text-text-primary mb-2 ${textLine}`}
             >
               {item.title}
             </h2>
             <time
-              dateTime={item.time}
+              dateTime={item.time1 +  "-" + item.time2}
               className={`schedule-time font-[Montserrat] text-text-secondary mb-4 block ${textLine}`}
             >
-              {item.time}
+              {item.time1} - {item.time2}
             </time>
           </header>
           <p
@@ -138,7 +138,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
         <button
           type="button"
           className="schedule-control flex items-center size-fit rounded-full bg-button-accent p-2 hover:cursor-pointer hover:bg-[#F4E2BB] transition-colors duration-500 ease-in-out absolute right-0.5 z-10"
-          onClick={() => onContOpen(item.id)}
+          onClick={() => onContOpen(item.uid)}
           aria-label={
             item.isContOpen ? "Close actions panel" : "Open actions panel"
           }

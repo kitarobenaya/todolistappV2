@@ -1,20 +1,21 @@
 import { useState } from "react";
 import ScheduleItem from "./assets/component/ScheduleItems.jsx";
-import InputForm from "./assets/component/InputForm.jsx";
+import InputForm from "./assets/component/InputSchedule.jsx";
+import InputItems from "./assets/component/InputItems.jsx";
 import "./App.css";
 
 export default function App() {
   const [schedules, setSchedules] = useState(JSON.parse(localStorage.getItem("schedules")) || []);
   const [showInputForm, setShowInputForm] = useState(false);
-  const [items, setItems] = useState(
-    [{id: 1, title: "Sample Task", time: "10.00 - 12.00", desc: "tesasjndaklkca slkdnladal lkansdlsand lnsdlan ljandljas jandlj", checked: false, isContOpen: false},
-    {id: 1, title: "Sample Task", time: "10.00 - 12.00", checked: false, isContOpen: false},
-    {id: 2, title: "Another Task",time: "10.00 - 12.00", checked: true, isContOpen: false}]);
+  const [showInputTask, setInputTask] = useState(false);
+  const [date, setDate] = useState("");
+
+  const [items, setItems] = useState(JSON.parse(localStorage.getItem("schedules"))?.flatMap(sch => sch.items) || []);
 
   const handleCheck = (id) =>
     setItems(prev =>
       prev.map(it =>
-        it.id === id ? { ...it, checked: !it.checked } : it
+        it.uid === id ? { ...it, checked: !it.checked } : it
       )
     );
 
@@ -22,19 +23,20 @@ export default function App() {
     setItems(prev =>
       prev.map(it => ({
         ...it,
-        isContOpen: it.id === id ? !it.isContOpen : false
+        isContOpen: it.uid === id ? !it.isContOpen : it.isContOpen,
       }))
     );
-
-  const handleDeleteList = (uid) => {
-    const updatedSchedules = schedules.filter(schedule => schedule.uid !== uid);
+    
+    const handleDeleteList = (uid) => {
+      const updatedSchedules = schedules.filter(schedule => schedule.uid !== uid);
     setSchedules(updatedSchedules);
     localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
   }
-
+  
   return (
     <>
       {showInputForm && <InputForm setShowForm={setShowInputForm} stateItems={setSchedules} />}
+      {showInputTask && <InputItems date={date} setInputTask={setInputTask} stateItems={setItems} />}
 
       <header className="app-header mt-4">
         <h1 className="text-4xl font-bold text-center font-[Montserrat] text-text-primary animate-title underline underline-offset-8">
@@ -62,7 +64,8 @@ export default function App() {
         >
           {/* schedule list */}
           {schedules.map(schedule => {
-            const hari = new Date(schedule.date).toLocaleDateString('id-ID', { weekday: 'long' });  
+            const hari = new Date(schedule.date).toLocaleDateString('id-ID', { weekday: 'long' });
+          
             return (
             <article
               key={schedule.uid}
@@ -98,10 +101,10 @@ export default function App() {
               </header>
 
               <div className="schedule-items flex flex-col gap-6" role="list">
-                {items.map(item => (
-                  <ScheduleItem
-                    key={item.id}
-                    item={item}
+                {items.filter(it => it?.date === schedule.date).map(item => (
+                  <ScheduleItem 
+                    key={item.uid}
+                    item={item} 
                     onCheck={handleCheck}
                     onContOpen={handleContOpen}
                   />
@@ -113,7 +116,10 @@ export default function App() {
                   type="button"
                   className="add-schedule-btn w-full bg-maroon p-2 rounded-xl hover:bg-[#865555] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 justify-center items-center"
                   aria-label="Add new schedule"
-                  onClick={() => setShowInputForm(true)}
+                  onClick={() => {
+                    setInputTask(true);
+                    setDate(schedule.date);
+                  }}
                 >
                   <span className="add-task-btn-text font-[Montserrat] font-bold text-white relative flex justify-center">
                     Add Task
