@@ -2,13 +2,16 @@
 import { useState, useEffect } from "react";
 import RightArrow from "./../img/right-arrow.png";
 import LeftArrow from "./../img/left-arrow.png";
+import EditForm from "./EditForm.jsx";
+
 
 const ANIM_DURATION = 700; // ms
 
-export default function ScheduleItem({ item, onCheck, onContOpen }) {
+export default function ScheduleItem({ item, onContOpen, setItems }) {
   // animasi mount/unmount
   const [show, setShow] = useState(item.isContOpen);
   const [render, setRender] = useState(item.isContOpen);
+  const [showEditForm, setEditForm] = useState(false);
 
   useEffect(() => {
     if (item.isContOpen) {
@@ -21,6 +24,32 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
     }
   }, [item.isContOpen]);
 
+  function handleDeleteTask(uid) {
+    const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
+    const updatedSchedules = existingSchedules.map(sch => ({
+      ...sch,
+      items: sch.items.filter(it => it.uid !== uid)
+    }));
+    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
+    setItems(prev => prev.filter(it => it.uid !== uid));
+  }
+
+  function handleCheckTask(uid) {
+    const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
+    const updatedSchedules = existingSchedules.map(sch => ({
+      ...sch,
+      items: sch.items.map(it => 
+        it.uid === uid ? { ...it, checked: !it.checked } : it
+      )
+    }));
+    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
+    setItems(prev => 
+      prev.map(it => 
+        it.uid === uid ? { ...it, checked: !it.checked } : it
+      )
+    );
+  }
+
   // className helpers (Tailwind)
   const cardBg = item.checked ? "bg-emerald-200" : "bg-white";
   const textLine = item.checked ? "line-through" : "";
@@ -29,6 +58,8 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
     : "pointer-events-none animate-controlOut";
 
   return (
+    <>
+      {showEditForm && <EditForm uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} />}
     <div
       className="schedule-container size-full flex justify-center items-center flex-col relative "
       role="listitem"
@@ -55,7 +86,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
                 id={`complete-${item.uid}`}
                 className="peer h-5 w-5 cursor-pointer appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-green-500 checked:border-green-500"
                 checked={item.checked}
-                onChange={() => onCheck(item.uid)}
+                onChange={() => handleCheckTask(item.uid)}
                 aria-label="Mark as complete"
               />
               <span
@@ -84,6 +115,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
             <button
               type="button"
               className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center cursor-pointer"
+              onClick={() => handleDeleteTask(item.uid)}
               aria-label="Delete schedule item"
             >
               <span className="sr-only">Delete</span>
@@ -99,6 +131,7 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
             <button
               type="button"
               className="edit-button font-[Montserrat] text-white hover:underline cursor-pointer"
+              onClick={() => setEditForm(true)}
               aria-label="Edit schedule item"
             >
               Edit
@@ -153,5 +186,6 @@ export default function ScheduleItem({ item, onCheck, onContOpen }) {
         </button>
       </article>
     </div>
+    </>
   );
 }

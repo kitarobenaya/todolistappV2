@@ -12,13 +12,6 @@ export default function App() {
 
   const [items, setItems] = useState(JSON.parse(localStorage.getItem("schedules"))?.flatMap(sch => sch.items) || []);
 
-  const handleCheck = (id) =>
-    setItems(prev =>
-      prev.map(it =>
-        it.uid === id ? { ...it, checked: !it.checked } : it
-      )
-    );
-
   const handleContOpen = (id) =>
     setItems(prev =>
       prev.map(it => ({
@@ -28,7 +21,7 @@ export default function App() {
     );
     
     const handleDeleteList = (uid) => {
-      const updatedSchedules = schedules.filter(schedule => schedule.uid !== uid);
+    const updatedSchedules = schedules.filter(schedule => schedule.uid !== uid);
     setSchedules(updatedSchedules);
     localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
   }
@@ -37,6 +30,7 @@ export default function App() {
     <>
       {showInputForm && <InputForm setShowForm={setShowInputForm} stateItems={setSchedules} />}
       {showInputTask && <InputItems date={date} setInputTask={setInputTask} stateItems={setItems} />}
+
 
       <header className="app-header mt-4">
         <h1 className="text-4xl font-bold text-center font-[Montserrat] text-text-primary animate-title underline underline-offset-8">
@@ -105,7 +99,7 @@ export default function App() {
                   <ScheduleItem 
                     key={item.uid}
                     item={item} 
-                    onCheck={handleCheck}
+                    setItems={setItems}
                     onContOpen={handleContOpen}
                   />
                 ))}
