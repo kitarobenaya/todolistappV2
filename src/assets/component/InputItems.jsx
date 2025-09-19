@@ -126,6 +126,10 @@ export default function InputItems({ date, setInputTask, stateItems }) {
                 id="description"
                 name="description"
                 rows="4"
+                value={dataItems.desc}
+                onChange={(e) =>
+                  setDataItems({ ...dataItems, desc: e.target.value })
+                }
                 placeholder="Enter description..."
                 aria-multiline="true"
               ></textarea>
