@@ -15,6 +15,12 @@ export default function InputForm({setShowForm, stateItems}) {
     }
 
     const existingData = JSON.parse(localStorage.getItem("schedules")) || [];
+
+    if(existingData.length === 4) {
+      alert("The maximum schedule is 4, remove previous schedule to add new shecudle");
+      return;
+    }
+
     const newData = [...existingData, data];
     localStorage.setItem("schedules", JSON.stringify(newData));
 
