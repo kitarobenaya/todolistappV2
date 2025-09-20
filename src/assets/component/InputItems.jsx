@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InputItems({ date, setInputTask, stateItems }) {
+export default function InputItems({ date, setInputTask, stateItems, setSchedules }) {
   const [dataItems, setDataItems] = useState({
     uid: crypto.randomUUID(),
     title: "",
@@ -30,6 +30,7 @@ export default function InputItems({ date, setInputTask, stateItems }) {
     setInputTask(false);
     setDataItems({ title: "", date: "", description: "" });
     stateItems(prev => [...prev, dataItems]);
+    setSchedules(updatedSchedules)
   }
 
   return (

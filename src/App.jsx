@@ -9,7 +9,6 @@ export default function App() {
   const [showInputForm, setShowInputForm] = useState(false);
   const [showInputTask, setInputTask] = useState(false);
   const [date, setDate] = useState("");
-
   const [items, setItems] = useState(JSON.parse(localStorage.getItem("schedules"))?.flatMap(sch => sch.items) || []);
 
   const handleContOpen = (id) =>
@@ -29,7 +28,7 @@ export default function App() {
   return (
     <>
       {showInputForm && <InputForm setShowForm={setShowInputForm} stateItems={setSchedules} />}
-      {showInputTask && <InputItems date={date} setInputTask={setInputTask} stateItems={setItems} />}
+      {showInputTask && <InputItems date={date} setInputTask={setInputTask} stateItems={setItems} setSchedules={setSchedules} />}
 
 
       <header className="app-header mt-4">
@@ -53,7 +52,7 @@ export default function App() {
         </div>
 
         <section 
-          className="schedule-list size-full flex flex-row gap-8 justify-center items-center mb-16 flex-wrap"
+          className="schedule-list size-full flex flex-row gap-10 justify-center items-center mb-16 flex-wrap"
           aria-label="Schedule lists by date"
         >
           {/* schedule list */}
@@ -95,14 +94,18 @@ export default function App() {
               </header>
 
               <div className="schedule-items flex flex-col gap-6" role="list">
-                {items.filter(it => it?.date === schedule.date).map(item => (
+                {!schedule.items || schedule.items.length == 0 ? (
+                  <p className="text-center text-text-secondary font-[Montserrat] italic">No tasks available. Please add a task.</p>
+                ) : (
+                items.filter(it => it?.date === schedule.date).map(item => (
                   <ScheduleItem 
                     key={item.uid}
                     item={item} 
                     setItems={setItems}
                     onContOpen={handleContOpen}
+                    setSchedule={setSchedules}
                   />
-                ))}
+                )))}
               </div>
 
               <footer className="controls w-full h-fit flex justify-center items-center mb-2">

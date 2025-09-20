@@ -7,7 +7,7 @@ import EditForm from "./EditForm.jsx";
 
 const ANIM_DURATION = 700; // ms
 
-export default function ScheduleItem({ item, onContOpen, setItems }) {
+export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }) {
   // animasi mount/unmount
   const [show, setShow] = useState(item.isContOpen);
   const [render, setRender] = useState(item.isContOpen);
@@ -32,6 +32,7 @@ export default function ScheduleItem({ item, onContOpen, setItems }) {
     }));
     localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
     setItems(prev => prev.filter(it => it.uid !== uid));
+    setSchedule(updatedSchedules);
   }
 
   function handleCheckTask(uid) {
