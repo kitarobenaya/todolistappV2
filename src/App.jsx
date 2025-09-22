@@ -12,7 +12,6 @@ export default function App() {
   const [showInputTask, setInputTask] = useState(false);
   const [date, setDate] = useState("");
   const [items, setItems] = useState(JSON.parse(localStorage.getItem("schedules"))?.flatMap((sch) => sch.items) || []);
-  console.log(items)
 
   const handleContOpen = (id) =>
     setItems((prev) =>
@@ -45,7 +44,7 @@ export default function App() {
       )}
 
       <header className="app-header mt-4">
-        <h1 className="text-4xl font-bold text-center font-[Montserrat] text-text-primary animate-title underline underline-offset-8">
+        <h1 className="text-2xl font-bold text-center font-[Montserrat] text-text-primary animate-title underline underline-offset-4">
           Schedule Your Day with Kitaro's To-Do List App
         </h1>
       </header>
@@ -54,18 +53,18 @@ export default function App() {
         <div className="controls size-full flex justify-end mb-8">
           <button
             type="button"
-            className="add-schedule-btn bg-accent p-2 mr-8 rounded-xl hover:bg-[#6E867B] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 items-center"
+            className="add-schedule-btn bg-accent p-1 mr-4 rounded-xl hover:bg-[#6E867B] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 items-center"
             aria-label="Add new schedule"
             onClick={() => setShowInputForm(true)}
           >
-            <span className="add-schedule-btn-text font-[Montserrat] font-bold text-text-primary relative flex justify-center">
+            <span className="add-schedule-btn-text font-[Montserrat] font-bold text-text-primary relative flex justify-center text-[0.9rem]">
               Add Schedule
             </span>
           </button>
         </div>
 
         <section
-          className="schedule-list size-full flex flex-row gap-10 justify-center items-center mb-16 flex-wrap"
+          className="schedule-list size-full flex p-2 gap-6 justify-center items-center mb-16 flex-wrap"
           aria-label="Schedule lists by date"
         >
           {/* schedule list */}
@@ -83,13 +82,13 @@ export default function App() {
                 <header>
                   <h2
                     id="date-heading-1"
-                    className="text-center font-bold font-[Montserrat] text-2xl text-text-primary"
+                    className="text-center font-bold font-[Montserrat] text-[1.2rem] text-text-primary"
                   >
                     <time dateTime={schedule.date}>
                       {hari + ", " + schedule.date}
                     </time>
                   </h2>
-                  <div className="action-button size-fit flex justify-end items-center absolute top-4 right-4">
+                  <div className="action-button size-fit flex justify-end items-center absolute top-2 right-4">
                     {/* Delete button */}
                     <button
                       type="button"
@@ -112,7 +111,7 @@ export default function App() {
 
                 <div className="schedule-items flex flex-col gap-6" role="list">
                   {!schedule.items || schedule.items.length == 0 ? (
-                    <p className="text-center text-text-secondary font-[Montserrat] italic">
+                    <p className="text-center text-text-secondary font-[Montserrat] italic text-[0.9rem]">
                       No tasks available. Please add a task.
                     </p>
                   ) : (
@@ -133,14 +132,14 @@ export default function App() {
                 <footer className="controls w-full h-fit flex justify-center items-center mb-2">
                   <button
                     type="button"
-                    className="add-schedule-btn w-full bg-maroon p-2 rounded-xl hover:bg-[#865555] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 justify-center items-center"
+                    className="add-schedule-btn w-[90%] bg-maroon p-1 rounded-xl hover:bg-[#865555] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 justify-center items-center"
                     aria-label="Add new schedule"
                     onClick={() => {
                       setInputTask(true);
                       setDate(schedule.date);
                     }}
                   >
-                    <span className="add-task-btn-text font-[Montserrat] font-bold text-white relative flex justify-center">
+                    <span className="add-task-btn-text font-[Montserrat] font-bold text-white relative flex justify-center text-[0.9rem]">
                       Add Task
                     </span>
                   </button>

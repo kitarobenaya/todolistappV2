@@ -23,9 +23,12 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
       return () => clearTimeout(t);
     }
   }, [item.isContOpen]);
-
+  
+  
   function handleDeleteTask(uid) {
     const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
+    console.log(existingSchedules.map(sch => {typeof sch.items}))
+    // console.log(existingSchedules)
     const updatedSchedules = existingSchedules.map(sch => ({
       ...sch,
       items: sch.items.filter(it => it.uid !== uid)
@@ -71,7 +74,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
           className={`
           schedule-actions flex justify-center items-center flex-col gap-2
           bg-text-primary p-2 rounded-br-xl rounded-tr-xl
-          absolute right-[-2.4rem] shadow-2xl transition-all duration-300
+          absolute right-[-1rem] shadow-2xl transition-all duration-300
           ${actionClass}
         `}
           aria-label="Schedule item actions"
@@ -131,7 +134,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
             </button>
             <button
               type="button"
-              className="edit-button font-[Montserrat] text-white hover:underline cursor-pointer"
+              className="edit-button font-[Montserrat] text-white hover:underline cursor-pointer text-[0.9rem]"
               onClick={() => setEditForm(true)}
               aria-label="Edit schedule item"
             >
@@ -143,7 +146,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
 
       {/* Schedule card */}
       <article
-        className={`schedule-card w-[96%] h-fit p-1 rounded-2xl shadow-xl flex items-center relative ${cardBg}`}
+        className={`schedule-card w-[85%] h-fit p-1 rounded-2xl shadow-xl flex items-center relative ${cardBg}`}
         aria-labelledby={`schedule-title-${item.uid}`}
       >
         <div className="schedule-content p-4">
