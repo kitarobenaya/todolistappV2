@@ -40,7 +40,7 @@ export default function InputItems({ date, setInputTask, stateItems, setSchedule
       aria-labelledby="form-title"
     >
       <form
-        className="input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl"
+        className="input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl sm:w-[450px] md:w-[500px]"
         aria-label="Add new schedule form"
       >
         <header>
@@ -62,7 +62,7 @@ export default function InputItems({ date, setInputTask, stateItems, setSchedule
                 Title
               </label>
               <input
-                className="w-[80%] p-2 rounded-lg border border-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent font-[Montserrat]"
+                className="w-[80%] p-2 rounded-lg border border-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent font-[Montserrat] sm:w-full"
                 type="text"
                 id="title"
                 name="title"
@@ -123,7 +123,7 @@ export default function InputItems({ date, setInputTask, stateItems, setSchedule
                 Description
               </label>
               <textarea
-                className="w-[80%] p-2 rounded-lg border border-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                className="w-[80%] p-2 rounded-lg border border-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent font-[Montserrat] sm:w-full"
                 id="description"
                 name="description"
                 rows="4"

@@ -74,7 +74,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
           className={`
           schedule-actions flex justify-center items-center flex-col gap-2
           bg-text-primary p-2 rounded-br-xl rounded-tr-xl
-          absolute right-[-1rem] shadow-2xl transition-all duration-300
+          absolute right-[-1rem] shadow-2xl transition-all duration-300 sSm:right-[-0.8rem] sm:right-[-0.7rem]
           ${actionClass}
         `}
           aria-label="Schedule item actions"
@@ -153,19 +153,19 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
           <header>
             <h2
               id={`schedule-title-${item.uid}`}
-              className={`schedule-title font-[Montserrat] font-bold text-xl text-text-primary mb-2 ${textLine}`}
+              className={`schedule-title font-[Montserrat] font-bold text-[1.15rem] text-text-primary mb-2 sm:text-[1.3rem] ${textLine}`}
             >
               {item.title}
             </h2>
             <time
               dateTime={item.time1 +  "-" + item.time2}
-              className={`schedule-time font-[Montserrat] text-text-secondary mb-4 block ${textLine}`}
+              className={`schedule-time font-[Montserrat] text-text-secondary mb-4 block sm:text-[1.1rem] ${textLine}`}
             >
               {item.time1} - {item.time2}
             </time>
           </header>
           <p
-            className={`schedule-description font-[Montserrat] text-text-secondary max-w-full break-words ${textLine}`}
+            className={`schedule-description font-[Montserrat] text-text-secondary max-w-full break-words sm:text-[1.1rem] ${textLine}`}
           >
             {item.desc}
           </p>

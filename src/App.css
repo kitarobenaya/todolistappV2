@@ -6,7 +6,7 @@
   --color-accent: #849F90;
   --color-button-accent: #F0D49D;
   --color-maroon: #A86F6F;
-  
+  --breakpoint-sSm: 430px;
   --animate-title: fadeInDown 900ms ease-in-out;
   @keyframes fadeInDown {
     0% {

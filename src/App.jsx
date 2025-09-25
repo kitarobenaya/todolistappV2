@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from "./assets/component/Header.jsx";
 import ScheduleItem from "./assets/component/ScheduleItems.jsx";
 import InputForm from "./assets/component/InputSchedule.jsx";
 import InputItems from "./assets/component/InputItems.jsx";
@@ -43,21 +44,17 @@ export default function App() {
         />
       )}
 
-      <header className="app-header mt-4">
-        <h1 className="text-2xl font-bold text-center font-[Montserrat] text-text-primary animate-title underline underline-offset-4">
-          Schedule Your Day with Kitaro's To-Do List App
-        </h1>
-      </header>
+      < Header />
 
       <main className="schedule-manager size-full mt-8" role="main">
         <div className="controls size-full flex justify-end mb-8">
           <button
             type="button"
-            className="add-schedule-btn bg-accent p-1 mr-4 rounded-xl hover:bg-[#6E867B] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 items-center"
+            className="add-schedule-btn bg-accent p-1 mr-4 rounded-xl hover:bg-[#6E867B] cursor-pointer transition-colors duration-500 ease-in-out flex gap-2 items-center sm:p-2 sm:mr-8"
             aria-label="Add new schedule"
             onClick={() => setShowInputForm(true)}
           >
-            <span className="add-schedule-btn-text font-[Montserrat] font-bold text-text-primary relative flex justify-center text-[0.9rem]">
+            <span className="add-schedule-btn-text font-[Montserrat] font-bold text-text-primary relative flex justify-center text-[0.9rem] sm:text-[1rem]">
               Add Schedule
             </span>
           </button>
@@ -76,19 +73,19 @@ export default function App() {
             return (
               <article
                 key={schedule.uid}
-                className="schedule-day w-[28rem] h-fit bg-accent rounded-2xl flex flex-col gap-6 schedules-center p-2 relative"
+                className="schedule-day w-[28rem] h-fit bg-accent rounded-2xl flex flex-col gap-6 schedules-center p-2 relative sm:w-[30rem]"
                 aria-labelledby={schedule.uid}
               >
                 <header>
                   <h2
                     id="date-heading-1"
-                    className="text-center font-bold font-[Montserrat] text-[1.2rem] text-text-primary"
+                    className="text-center font-bold font-[Montserrat] text-[1.3rem] text-text-primary sm:text-[1.5rem]"
                   >
                     <time dateTime={schedule.date}>
                       {hari + ", " + schedule.date}
                     </time>
                   </h2>
-                  <div className="action-button size-fit flex justify-end items-center absolute top-2 right-4">
+                  <div className="action-button size-fit flex justify-end items-center absolute top-2 right-4 sm:top-4 sm:right-6">
                     {/* Delete button */}
                     <button
                       type="button"
@@ -139,7 +136,7 @@ export default function App() {
                       setDate(schedule.date);
                     }}
                   >
-                    <span className="add-task-btn-text font-[Montserrat] font-bold text-white relative flex justify-center text-[0.9rem]">
+                    <span className="add-task-btn-text font-[Montserrat] font-bold text-white relative flex justify-center text-[0.9rem] sm:text-[1.09rem]">
                       Add Task
                     </span>
                   </button>
