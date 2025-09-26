@@ -33,11 +33,14 @@ export default function App() {
   return (
     <>
       {showInputForm && (
-        <InputForm setShowForm={setShowInputForm} stateItems={setSchedules} />
+        <InputForm showInputForm={showInputForm} setShowForm={setShowInputForm} stateItems={setSchedules} />
       )}
+      {/* <InputForm setShowForm={setShowInputForm} stateItems={setSchedules} /> */}
+
       {showInputTask && (
         <InputItems
           date={date}
+          showInputTask={showInputTask}
           setInputTask={setInputTask}
           stateItems={setItems}
           setSchedules={setSchedules}

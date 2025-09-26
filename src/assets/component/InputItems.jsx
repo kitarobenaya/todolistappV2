@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InputItems({ date, setInputTask, stateItems, setSchedules }) {
+export default function InputItems({showInputTask, date, setInputTask, stateItems, setSchedules }) {
   const [dataItems, setDataItems] = useState({
     uid: crypto.randomUUID(),
     title: "",
@@ -33,6 +33,8 @@ export default function InputItems({ date, setInputTask, stateItems, setSchedule
     setSchedules(updatedSchedules)
   }
 
+  const formAnimation = showInputTask ? "animate-popOpen" : "animate-popClose";
+
   return (
     <div
       className="glassBackground fixed inset-0 flex items-center justify-center bg-[rgba(0, 0, 0, 0.2)] backdrop-blur-lg z-20 overflow-hidden"
@@ -40,7 +42,7 @@ export default function InputItems({ date, setInputTask, stateItems, setSchedule
       aria-labelledby="form-title"
     >
       <form
-        className="input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl sm:w-[450px] md:w-[500px]"
+        className={`input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl sm:w-[450px] md:w-[500px] animate-popOpen ${formAnimation}`}
         aria-label="Add new schedule form"
       >
         <header>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InputForm({setShowForm, stateItems}) {
+export default function InputForm({showInputForm, setShowForm, stateItems}) {
     const [data, setData] = useState({
         uid: crypto.randomUUID(),
         date: "",
@@ -29,6 +29,10 @@ export default function InputForm({setShowForm, stateItems}) {
     stateItems(prev => [...prev, data]);
     }
 
+    // Animation for form
+    const ANIM_DURATION = 700; // ms
+    const formAnimation = showInputForm ? "animate-popOpen" : "animate-popClose";
+
   return (
     <div
       className="glassBackground fixed inset-0 flex items-center justify-center bg-[rgba(0, 0, 0, 0.2)] backdrop-blur-lg z-20 overflow-hidden"
@@ -36,7 +40,7 @@ export default function InputForm({setShowForm, stateItems}) {
       aria-labelledby="form-title"
     >
       <form
-        className="input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl sm:w-[450px] md:w-[500px]"
+        className={`input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl sm:w-[450px] md:w-[500px] ${formAnimation}`}
         aria-label="Add new schedule form"
       >
         <header>

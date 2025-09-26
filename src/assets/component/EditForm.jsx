@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EditForm({uid, title, time1, time2, desc, checked, date, stateItems, setEditForm }) {
+export default function EditForm({showEditForm, uid, title, time1, time2, desc, checked, date, stateItems, setEditForm }) {
   const [newdataItems, setNewDataItems] = useState({
     uid: uid,
     title: title,
@@ -35,6 +35,8 @@ export default function EditForm({uid, title, time1, time2, desc, checked, date,
     );
   }
 
+  const formAnimation = showEditForm ? "animate-popOpen" : "animate-popClose";
+
   return (
     <div
       className="glassBackground fixed inset-0 flex items-center justify-center bg-[rgba(0, 0, 0, 0.2)] backdrop-blur-lg z-20 overflow-hidden"
@@ -42,7 +44,7 @@ export default function EditForm({uid, title, time1, time2, desc, checked, date,
       aria-labelledby="form-title"
     >
       <form
-        className="input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl sm:w-[450px] md:w-[500px]"
+        className={`input-form w-full h-fit flex flex-col gap-8 bg-white/50 backdrop-blur-lg rounded-3xl p-8 shadow-2xl sm:w-[450px] md:w-[500px] animate-popOpen ${formAnimation}`}
         aria-label="Add new schedule form"
       >
         <header>

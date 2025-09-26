@@ -63,7 +63,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
 
   return (
     <>
-      {showEditForm && <EditForm uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} />}
+      {showEditForm && <EditForm showEditForm={showEditForm} uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} />}
     <div
       className="schedule-container size-full flex justify-center items-center flex-col relative "
       role="listitem"
