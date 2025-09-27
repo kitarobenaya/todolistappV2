@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Header from "./assets/component/Header.jsx";
+import Header from "./assets/component/organism/Header.jsx";
 import ScheduleItem from "./assets/component/ScheduleItems.jsx";
 import InputForm from "./assets/component/InputSchedule.jsx";
 import InputItems from "./assets/component/InputItems.jsx";

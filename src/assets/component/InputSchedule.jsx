@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function InputForm({showInputForm, setShowForm, stateItems}) {
     const [data, setData] = useState({
@@ -31,6 +31,15 @@ export default function InputForm({showInputForm, setShowForm, stateItems}) {
 
     // Animation for form
     const ANIM_DURATION = 700; // ms
+    useEffect(() => {
+      let timeoutId;
+      if (!showInputForm) {
+        timeoutId = setTimeout(() => {
+          setShowForm(false);
+        }, ANIM_DURATION);
+      }
+      return () => clearTimeout(timeoutId);
+    }, [showInputForm, setShowForm]);
     const formAnimation = showInputForm ? "animate-popOpen" : "animate-popClose";
 
   return (
