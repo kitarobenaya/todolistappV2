@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EditForm({showEditForm, uid, title, time1, time2, desc, checked, date, stateItems, setEditForm }) {
+export default function EditTask({showEditForm, uid, title, time1, time2, desc, checked, date, stateItems, setEditForm }) {
   const [newdataItems, setNewDataItems] = useState({
     uid: uid,
     title: title,

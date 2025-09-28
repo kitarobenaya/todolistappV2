@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InputItems({showInputTask, date, setInputTask, stateItems, setSchedules }) {
+export default function InputTask({showInputTask, date, setInputTask, stateItems, setSchedules }) {
   const [dataItems, setDataItems] = useState({
     uid: crypto.randomUUID(),
     title: "",
