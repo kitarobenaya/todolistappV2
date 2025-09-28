@@ -66,15 +66,13 @@ export default function App() {
 
       <main className={`schedule-manager size-full mt-8 ${ScheduleEmptySty}`} role="main">
 
-        {isScheduleEmpty && (
+        {isScheduleEmpty ? (
           <div className="size-fit flex justify-center items-center">
             <p className="text-center text-text-secondary font-[Montserrat] italic text-[1rem]">
               No schedules available. Please add a schedule.
             </p>
           </div>
-        )}
-
-        {!isScheduleEmpty && (
+        ) : (
           <Schedule
             schedules={schedules}
             handleDeleteList={handleDeleteList}
