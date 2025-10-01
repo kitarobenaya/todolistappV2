@@ -67,6 +67,19 @@
       transform: scale(0);
     }
   }
+
+  --animate-alertPop: alertPop 500ms ease-in-out;
+  @keyframes alertPop {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 }
 
 ::-webkit-scrollbar {

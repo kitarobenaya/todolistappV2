@@ -7,7 +7,7 @@ import EditTask from "./InputForm/EditTask.jsx";
 
 const ANIM_DURATION = 700; // ms
 
-export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }) {
+export default function ScheduleItem({ item, onContOpen, setItems, setCondition, setDecisionCondition, setUid }) {
   // animasi mount/unmount
   const [show, setShow] = useState(item.isContOpen);
   const [render, setRender] = useState(item.isContOpen);
@@ -23,20 +23,6 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
       return () => clearTimeout(t);
     }
   }, [item.isContOpen]);
-  
-  
-  function handleDeleteTask(uid) {
-    const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
-    console.log(existingSchedules.map(sch => {typeof sch.items}))
-    // console.log(existingSchedules)
-    const updatedSchedules = existingSchedules.map(sch => ({
-      ...sch,
-      items: sch.items.filter(it => it.uid !== uid)
-    }));
-    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
-    setItems(prev => prev.filter(it => it.uid !== uid));
-    setSchedule(updatedSchedules);
-  }
 
   function handleCheckTask(uid) {
     const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
@@ -63,7 +49,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
 
   return (
     <>
-      {showEditForm && <EditTask showEditForm={showEditForm} uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} />}
+      {showEditForm && <EditTask showEditForm={showEditForm} uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} setCondition={setCondition} />}
     <div
       className="schedule-container size-full flex justify-center items-center flex-col relative "
       role="listitem"
@@ -119,7 +105,10 @@ export default function ScheduleItem({ item, onContOpen, setItems, setSchedule }
             <button
               type="button"
               className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center cursor-pointer"
-              onClick={() => handleDeleteTask(item.uid)}
+              onClick={() => {
+                setDecisionCondition("task");
+                setUid(item.uid);
+              }}
               aria-label="Delete schedule item"
             >
               <span className="sr-only">Delete</span>

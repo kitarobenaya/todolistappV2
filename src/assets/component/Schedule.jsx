@@ -1,9 +1,9 @@
 import ScheduleItem from "./ScheduleItems.jsx";
 
-export default function Schedule ({schedules, handleDeleteList, items, setItems, handleContOpen, setInputTask, setDate, setSchedules}) {
+export default function Schedule ({schedules, items, setItems, handleContOpen, setInputTask, setDate, setDecisionCondition, setUid}) {
     return (
         <section
-          className="schedule-list size-full flex p-2 gap-6 justify-center items-center mb-16 flex-wrap"
+          className="schedule-list size-full flex p-2 gap-6 justify-center mb-16 flex-wrap"
           aria-label="Schedule lists by date"
         >
           {/* schedule list */}
@@ -32,7 +32,10 @@ export default function Schedule ({schedules, handleDeleteList, items, setItems,
                     <button
                       type="button"
                       className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center cursor-pointer"
-                      onClick={() => handleDeleteList(schedule.uid)}
+                      onClick={() => {
+                        setDecisionCondition("schedule");
+                        setUid(schedule.uid);
+                      }}
                       aria-label="Delete schedule list"
                     >
                       <span className="sr-only">Delete</span>
@@ -62,7 +65,8 @@ export default function Schedule ({schedules, handleDeleteList, items, setItems,
                           item={item}
                           setItems={setItems}
                           onContOpen={handleContOpen}
-                          setSchedule={setSchedules}
+                          setDecisionCondition={setDecisionCondition}
+                          setUid={setUid}
                         />
                       ))
                   )}

@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-export default function InputTask({showInputTask, date, setInputTask, stateItems, setSchedules }) {
+export default function InputTask({showInputTask, date, setInputTask, stateItems, setSchedules, setCondition }) {
   const [dataItems, setDataItems] = useState({
     uid: crypto.randomUUID(),
     title: "",
     time1: "",
     time2: "",
-    desc: "",
+    desc: "-",
     checked: false,
     date: date,
   });
@@ -14,8 +14,8 @@ export default function InputTask({showInputTask, date, setInputTask, stateItems
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!dataItems.title || !dataItems.date) {
-      alert("Please fill in all required fields.");
+    if (!dataItems.title || !dataItems.date || !dataItems.time1 || !dataItems.time2) {
+      setCondition('error');
       return;
     }
 
@@ -31,6 +31,7 @@ export default function InputTask({showInputTask, date, setInputTask, stateItems
     setDataItems({ title: "", date: "", description: "" });
     stateItems(prev => [...prev, dataItems]);
     setSchedules(updatedSchedules)
+    setCondition('success');
   }
 
   const formAnimation = showInputTask ? "animate-popOpen" : "animate-popClose";

@@ -4,12 +4,17 @@ import Schedule from "./assets/component/Schedule.jsx";
 import Footer from "./assets/component/Footer.jsx";
 import InputForm from "./assets/component/InputForm/InputSchedule.jsx";
 import InputTask from "./assets/component/InputForm/InputTask.jsx";
+import Alert from "./assets/component/PopUpAlert/Alert.jsx";
+import DecisionAlert from "./assets/component/PopUpAlert/DecisionAlert.jsx";
 import "./App.css";
 
 export default function App() {
   const [schedules, setSchedules] = useState(
     JSON.parse(localStorage.getItem("schedules")) || []
   );
+  const [condition, setCondition] = useState('');
+  const [decisionCondition, setDecisionCondition] = useState('');
+  const [uid, setUid] = useState('');
   const [showInputForm, setShowInputForm] = useState(false);
   const [showInputTask, setInputTask] = useState(false);
   const [date, setDate] = useState("");
@@ -26,17 +31,30 @@ export default function App() {
     );
 
   const handleDeleteList = (uid) => {
-    const updatedSchedules = schedules.filter(
-      (schedule) => schedule.uid !== uid
-    );
-    setSchedules(updatedSchedules);
-    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
+      const updatedSchedules = schedules.filter(
+        (schedule) => schedule.uid !== uid
+      );
+      setSchedules(updatedSchedules);
+      localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
   };
 
+  function handleDeleteTask(uid) {
+    const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
+    console.log(existingSchedules.map(sch => {typeof sch.items}))
+    // console.log(existingSchedules)
+    const updatedSchedules = existingSchedules.map(sch => ({
+      ...sch,
+      items: sch.items.filter(it => it.uid !== uid) || []
+    }));
+    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
+    setItems(prev => prev.filter(it => it.uid !== uid));
+    setSchedules(updatedSchedules);
+  }
+
   return (
-    <>
+    <>    
       {showInputForm && (
-        <InputForm showInputForm={showInputForm} setShowForm={setShowInputForm} stateItems={setSchedules} />
+        <InputForm showInputForm={showInputForm} setShowForm={setShowInputForm} stateItems={setSchedules} condition={condition} setCondition={setCondition} />
       )}
 
       {showInputTask && (
@@ -46,7 +64,28 @@ export default function App() {
           setInputTask={setInputTask}
           stateItems={setItems}
           setSchedules={setSchedules}
+          setCondition={setCondition}
         />
+      )}
+
+      {decisionCondition == "task" && (
+        <DecisionAlert message={"Are you sure?"} type={'task'} setDecisionCondition={setDecisionCondition} uid={uid} handleDeleteList={handleDeleteTask} setCondition={setCondition} />
+      )}
+
+      {decisionCondition == "schedule" && (
+        <DecisionAlert message={"Are you sure?"} type={'schedule'} setDecisionCondition={setDecisionCondition} uid={uid} handleDeleteList={handleDeleteList} setCondition={setCondition} />
+      )}
+
+      {condition == "success" && (
+        <Alert message={"Success!"} type={"success"} onClose={setCondition} />
+      )}
+
+      {condition == "error" && (
+        <Alert message={"Please fill in all required fields."} type={"error"} onClose={setCondition} />
+      )}
+
+      {condition == "max" && (
+        <Alert message={"Maximum schedule is 4."} type={"error"} onClose={setCondition} />
       )}
 
       < Header />
@@ -75,13 +114,14 @@ export default function App() {
         ) : (
           <Schedule
             schedules={schedules}
-            handleDeleteList={handleDeleteList}
             items={items}
             setItems={setItems}
             handleContOpen={handleContOpen}
             setInputTask={setInputTask}
             setDate={setDate}
             setSchedules={setSchedules}
+            setDecisionCondition={setDecisionCondition}
+            setUid={setUid}
           />
         )}
         
