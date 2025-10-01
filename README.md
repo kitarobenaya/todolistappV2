@@ -36,12 +36,12 @@ Fitur utamanya: menambahkan jadwal (schedule) berdasarkan tanggal, dan menambahk
 
 3. Install dependencies:
     npm install
-    # atau
+      atau
     yarn install
 
-4. Jalankan development servernya
+4. Jalankan development servernya:
     npm run dev
-    # atau
+      atau
     yarn dev
 
 5. Buka browser di http://localhost:5173 atau port yang ditampilkan
