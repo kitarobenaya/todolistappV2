@@ -9,7 +9,7 @@ export default function Alert({message, type, onClose}) {
       role="dialog"
       aria-labelledby="alert-title"
     >
-      <div className="absolute w-[40%] h-[40%] bg-white flex items-center justify-center flex-col rounded-lg shadow-lg z-60">
+      <div className="absolute w-full h-[40%] bg-white flex items-center justify-center flex-col rounded-lg shadow-lg z-60 sm:w-[60%] sm:h-[30%] lg:w-[40%] lg:h-[40%]">
         <div className={`${tailwindHandlerParent}`}>
             <div className={`${tailwindHandlerLine1}`}></div>
             <div className={`${tailwindHandlerLine2}`}></div>

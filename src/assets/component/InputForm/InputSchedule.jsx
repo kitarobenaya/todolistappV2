@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function InputForm({showInputForm, setShowForm, stateItems, setCondition}) {
+export default function InputSchedule({showInputForm, setShowForm, stateItems, setConditionAlert}) {
     const [data, setData] = useState({
         uid: crypto.randomUUID(),
         date: "",
@@ -11,21 +11,21 @@ export default function InputForm({showInputForm, setShowForm, stateItems, setCo
     event.preventDefault();
 
     if (!data.date) {
-        setCondition('error');
+        setConditionAlert('error');
         return;
     }
 
     const existingData = JSON.parse(localStorage.getItem("schedules")) || [];
 
     if(existingData.length === 4) {
-        setCondition('max');
+        setConditionAlert('max');
         return;
     }
 
     const newData = [...existingData, data];
     localStorage.setItem("schedules", JSON.stringify(newData));
 
-    setCondition('success');
+    setConditionAlert('success');
     setData({date: ""});
     stateItems(prev => [...prev, data]);
     setShowForm(false);

@@ -7,8 +7,7 @@ import EditTask from "./InputForm/EditTask.jsx";
 
 const ANIM_DURATION = 700; // ms
 
-export default function ScheduleItem({ item, onContOpen, setItems, setCondition, setDecisionCondition, setUid }) {
-  // animasi mount/unmount
+export default function ScheduleItem({ item, onContOpen, setItems, setConditionAlert, setDecisionConditionAlert, setUid }) {
   const [show, setShow] = useState(item.isContOpen);
   const [render, setRender] = useState(item.isContOpen);
   const [showEditForm, setEditForm] = useState(false);
@@ -49,7 +48,9 @@ export default function ScheduleItem({ item, onContOpen, setItems, setCondition,
 
   return (
     <>
-      {showEditForm && <EditTask showEditForm={showEditForm} uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} setCondition={setCondition} />}
+
+      {showEditForm && <EditTask showEditForm={showEditForm} uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} setConditionAlert={setConditionAlert} />}
+
     <div
       className="schedule-container size-full flex justify-center items-center flex-col relative "
       role="listitem"
@@ -106,7 +107,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setCondition,
               type="button"
               className="delete-button size-6 p-2 rounded-full bg-red-500 hover:bg-red-700 transition-colors duration-300 ease-in-out relative flex justify-center items-center cursor-pointer"
               onClick={() => {
-                setDecisionCondition("task");
+                setDecisionConditionAlert("task");
                 setUid(item.uid);
               }}
               aria-label="Delete schedule item"

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EditTask({showEditForm, uid, title, time1, time2, desc, checked, date, stateItems, setEditForm, setCondition }) {
+export default function EditTask({showEditForm, uid, title, time1, time2, desc, checked, date, stateItems, setEditForm, setConditionAlert }) {
   const [newdataItems, setNewDataItems] = useState({
     uid: uid,
     title: title,
@@ -15,7 +15,7 @@ export default function EditTask({showEditForm, uid, title, time1, time2, desc, 
     event.preventDefault();
 
     if (!newdataItems.title || !newdataItems.date || !newdataItems.time1 || !newdataItems.time2) {
-      setCondition('error');
+      setConditionAlert('error');
       return;
     }
 
@@ -33,7 +33,7 @@ export default function EditTask({showEditForm, uid, title, time1, time2, desc, 
         it.uid === newdataItems.uid ? newdataItems : it
       )
     );
-    setCondition('success');
+    setConditionAlert('success');
   }
 
   const formAnimation = showEditForm ? "animate-popOpen" : "animate-popClose";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InputTask({showInputTask, date, setInputTask, stateItems, setSchedules, setCondition }) {
+export default function InputTask({showInputTask, date, setInputTask, stateItems, setSchedules, setConditionAlert }) {
   const [dataItems, setDataItems] = useState({
     uid: crypto.randomUUID(),
     title: "",
@@ -15,7 +15,7 @@ export default function InputTask({showInputTask, date, setInputTask, stateItems
     event.preventDefault();
 
     if (!dataItems.title || !dataItems.date || !dataItems.time1 || !dataItems.time2) {
-      setCondition('error');
+      setConditionAlert('error');
       return;
     }
 
@@ -31,7 +31,7 @@ export default function InputTask({showInputTask, date, setInputTask, stateItems
     setDataItems({ title: "", date: "", description: "" });
     stateItems(prev => [...prev, dataItems]);
     setSchedules(updatedSchedules)
-    setCondition('success');
+    setConditionAlert('success');
   }
 
   const formAnimation = showInputTask ? "animate-popOpen" : "animate-popClose";

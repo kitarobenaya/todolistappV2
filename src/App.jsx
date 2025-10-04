@@ -2,7 +2,7 @@ import { useState } from "react";
 import Header from "./assets/component/Header.jsx";
 import Schedule from "./assets/component/Schedule.jsx";
 import Footer from "./assets/component/Footer.jsx";
-import InputForm from "./assets/component/InputForm/InputSchedule.jsx";
+import InputSchedule from "./assets/component/InputForm/InputSchedule.jsx";
 import InputTask from "./assets/component/InputForm/InputTask.jsx";
 import Alert from "./assets/component/PopUpAlert/Alert.jsx";
 import DecisionAlert from "./assets/component/PopUpAlert/DecisionAlert.jsx";
@@ -12,8 +12,8 @@ export default function App() {
   const [schedules, setSchedules] = useState(
     JSON.parse(localStorage.getItem("schedules")) || []
   );
-  const [condition, setCondition] = useState('');
-  const [decisionCondition, setDecisionCondition] = useState('');
+  const [conditionAlert, setConditionAlert] = useState('');
+  const [decisionConditionAlert, setDecisionConditionAlert] = useState('');
   const [uid, setUid] = useState('');
   const [showInputForm, setShowInputForm] = useState(false);
   const [showInputTask, setInputTask] = useState(false);
@@ -40,8 +40,6 @@ export default function App() {
 
   function handleDeleteTask(uid) {
     const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
-    console.log(existingSchedules.map(sch => {typeof sch.items}))
-    // console.log(existingSchedules)
     const updatedSchedules = existingSchedules.map(sch => ({
       ...sch,
       items: sch.items.filter(it => it.uid !== uid) || []
@@ -54,7 +52,7 @@ export default function App() {
   return (
     <>    
       {showInputForm && (
-        <InputForm showInputForm={showInputForm} setShowForm={setShowInputForm} stateItems={setSchedules} condition={condition} setCondition={setCondition} />
+        <InputSchedule showInputForm={showInputForm} setShowForm={setShowInputForm} stateItems={setSchedules} setConditionAlert={setConditionAlert} />
       )}
 
       {showInputTask && (
@@ -64,28 +62,28 @@ export default function App() {
           setInputTask={setInputTask}
           stateItems={setItems}
           setSchedules={setSchedules}
-          setCondition={setCondition}
+          setConditionAlert={setConditionAlert}
         />
       )}
 
-      {decisionCondition == "task" && (
-        <DecisionAlert message={"Are you sure?"} type={'task'} setDecisionCondition={setDecisionCondition} uid={uid} handleDeleteList={handleDeleteTask} setCondition={setCondition} />
+      {decisionConditionAlert == "task" && (
+        <DecisionAlert message={"Are you sure?"} type={'task'} setDecisionConditionAlert={setDecisionConditionAlert} uid={uid} handleDeleteList={handleDeleteTask} setConditionAlert={setConditionAlert} />
       )}
 
-      {decisionCondition == "schedule" && (
-        <DecisionAlert message={"Are you sure?"} type={'schedule'} setDecisionCondition={setDecisionCondition} uid={uid} handleDeleteList={handleDeleteList} setCondition={setCondition} />
+      {decisionConditionAlert == "schedule" && (
+        <DecisionAlert message={"Are you sure?"} type={'schedule'} setDecisionConditionAlert={setDecisionConditionAlert} uid={uid} handleDeleteList={handleDeleteList} setConditionAlert={setConditionAlert} />
       )}
 
-      {condition == "success" && (
-        <Alert message={"Success!"} type={"success"} onClose={setCondition} />
+      {conditionAlert == "success" && (
+        <Alert message={"Success!"} type={"success"} onClose={setConditionAlert} />
       )}
 
-      {condition == "error" && (
-        <Alert message={"Please fill in all required fields."} type={"error"} onClose={setCondition} />
+      {conditionAlert == "error" && (
+        <Alert message={"Please fill in all required fields."} type={"error"} onClose={setConditionAlert} />
       )}
 
-      {condition == "max" && (
-        <Alert message={"Maximum schedule is 4."} type={"error"} onClose={setCondition} />
+      {conditionAlert == "max" && (
+        <Alert message={"Maximum schedule is 4."} type={"error"} onClose={setConditionAlert} />
       )}
 
       < Header />
@@ -120,7 +118,8 @@ export default function App() {
             setInputTask={setInputTask}
             setDate={setDate}
             setSchedules={setSchedules}
-            setDecisionCondition={setDecisionCondition}
+            setConditionAlert={setConditionAlert}
+            setDecisionConditionAlert={setDecisionConditionAlert}
             setUid={setUid}
           />
         )}
