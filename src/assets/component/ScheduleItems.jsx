@@ -7,7 +7,7 @@ import EditTask from "./InputForm/EditTask.jsx";
 
 const ANIM_DURATION = 700; // ms
 
-export default function ScheduleItem({ item, onContOpen, setItems, setConditionAlert, setDecisionConditionAlert, setUid }) {
+export default function ScheduleItem({ item, onContOpen, setSchedules, setConditionAlert, setDecisionConditionAlert, setUid }) {
   const [show, setShow] = useState(item.isContOpen);
   const [render, setRender] = useState(item.isContOpen);
   const [showEditForm, setEditForm] = useState(false);
@@ -31,12 +31,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setConditionA
         it.uid === uid ? { ...it, checked: !it.checked } : it
       )
     }));
-    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
-    setItems(prev => 
-      prev.map(it => 
-        it.uid === uid ? { ...it, checked: !it.checked } : it
-      )
-    );
+    setSchedules(updatedSchedules);
   }
 
   // className helpers (Tailwind)
@@ -49,7 +44,7 @@ export default function ScheduleItem({ item, onContOpen, setItems, setConditionA
   return (
     <>
 
-      {showEditForm && <EditTask showEditForm={showEditForm} uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} stateItems={setItems} setEditForm={setEditForm} setConditionAlert={setConditionAlert} />}
+      {showEditForm && <EditTask showEditForm={showEditForm} uid={item.uid} title={item.title} time1={item.time1} time2={item.time2} desc={item.desc} checked={item.checked} date={item.date} setSchedules={setSchedules} setEditForm={setEditForm} setConditionAlert={setConditionAlert} />}
 
     <div
       className="schedule-container size-full flex justify-center items-center flex-col relative "

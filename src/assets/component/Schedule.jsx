@@ -1,6 +1,6 @@
 import ScheduleItem from "./ScheduleItems.jsx";
 
-export default function Schedule ({schedules, items, setItems, handleContOpen, setInputTask, setDate, setConditionAlert, setDecisionConditionAlert, setUid}) {  
+export default function Schedule ({schedules, items, handleContOpen, setInputTask, setDate, setSchedules,setConditionAlert, setDecisionConditionAlert, setUid}) {  
   return (
         <section
           className="schedule-list size-full flex p-2 gap-6 justify-center mb-16 flex-wrap"
@@ -63,7 +63,7 @@ export default function Schedule ({schedules, items, setItems, handleContOpen, s
                         <ScheduleItem
                           key={item.uid}
                           item={item}
-                          setItems={setItems}
+                          setSchedules={setSchedules}
                           onContOpen={handleContOpen}
                           setConditionAlert={setConditionAlert}
                           setDecisionConditionAlert={setDecisionConditionAlert}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EditTask({showEditForm, uid, title, time1, time2, desc, checked, date, stateItems, setEditForm, setConditionAlert }) {
+export default function EditTask({showEditForm, uid, title, time1, time2, desc, checked, date, setSchedules, setEditForm, setConditionAlert }) {
   const [newdataItems, setNewDataItems] = useState({
     uid: uid,
     title: title,
@@ -26,13 +26,8 @@ export default function EditTask({showEditForm, uid, title, time1, time2, desc, 
             it.uid === newdataItems.uid ? newdataItems : it
         )
     }));
-    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
+    setSchedules(updatedSchedules);
     setEditForm(false);
-    stateItems(prev => 
-      prev.map(it => 
-        it.uid === newdataItems.uid ? newdataItems : it
-      )
-    );
     setConditionAlert('success');
   }
 

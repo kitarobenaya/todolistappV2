@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InputTask({showInputTask, date, setInputTask, stateItems, setSchedules, setConditionAlert }) {
+export default function InputTask({showInputTask, date, setInputTask, setSchedules, setConditionAlert }) {
   const [dataItems, setDataItems] = useState({
     uid: crypto.randomUUID(),
     title: "",
@@ -26,11 +26,9 @@ export default function InputTask({showInputTask, date, setInputTask, stateItems
       sch.date === dataItems.date ? { ...sch, items: updatedItems } : sch
     );
 
-    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
     setInputTask(false);
     setDataItems({ title: "", date: "", description: "" });
-    stateItems(prev => [...prev, dataItems]);
-    setSchedules(updatedSchedules)
+    setSchedules(updatedSchedules);
     setConditionAlert('success');
   }
 

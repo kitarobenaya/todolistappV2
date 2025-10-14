@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./assets/component/Header.jsx";
 import Schedule from "./assets/component/Schedule.jsx";
 import Footer from "./assets/component/Footer.jsx";
@@ -9,50 +9,82 @@ import DecisionAlert from "./assets/component/PopUpAlert/DecisionAlert.jsx";
 import "./App.css";
 
 export default function App() {
-  const [schedules, setSchedules] = useState(
-    JSON.parse(localStorage.getItem("schedules")) || []
-  );
-  const [conditionAlert, setConditionAlert] = useState('');
-  const [decisionConditionAlert, setDecisionConditionAlert] = useState('');
-  const [uid, setUid] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
+
+  const [schedules, setSchedules] = useState([]);
+  // mengambil data dari localStorage
+  useEffect(() => {
+    setSchedules(JSON.parse(localStorage.getItem("schedules")) || []);
+    setIsMounted(true);
+  }, []);
+
+  const [items, setItems] = useState([]);
+  // mengambil data dari localStorage
+  useEffect(() => {
+    const existingItems = schedules.flatMap((schedule) => schedule.items) || [];
+    setItems(existingItems);
+    setIsMounted(true);
+  }, [schedules]);
+
+  // menyimpan data ke localStorage
+  useEffect(() => {
+    if (isMounted) {
+      localStorage.setItem("schedules", JSON.stringify(schedules));
+    }
+  }, [schedules, isMounted]);
+
+  // untuk alert
+  const [conditionAlert, setConditionAlert] = useState("");
+  // untuk yes / no alert
+  const [decisionConditionAlert, setDecisionConditionAlert] = useState("");
+
+  const [uid, setUid] = useState("");
   const [showInputForm, setShowInputForm] = useState(false);
   const [showInputTask, setInputTask] = useState(false);
   const [date, setDate] = useState("");
-  const [items, setItems] = useState(JSON.parse(localStorage.getItem("schedules"))?.flatMap((sch) => sch.items) || []);
   const isScheduleEmpty = schedules.length === 0;
-  const ScheduleEmptySty = isScheduleEmpty ? " flex flex-col items-center justify-center grow pb-20" : "grow";
+  const ScheduleEmptySty = isScheduleEmpty
+    ? " flex flex-col items-center justify-center grow pb-20"
+    : "grow";
 
   const handleContOpen = (id) =>
-    setItems((prev) =>
-      prev.map((it) => ({
-        ...it,
-        isContOpen: it?.uid === id ? !it?.isContOpen : it?.isContOpen,
+    setSchedules(
+      schedules.map((schedule) => ({
+        ...schedule,
+        items: schedule.items.map((item) =>
+          item.uid === id ? { ...item, isContOpen: !item.isContOpen } : item
+        ),
       }))
     );
 
   const handleDeleteList = (uid) => {
-      const updatedSchedules = schedules.filter(
-        (schedule) => schedule.uid !== uid
-      );
-      setSchedules(updatedSchedules);
-      localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
+    const updatedSchedules = schedules.filter(
+      (schedule) => schedule.uid !== uid
+    );
+    setSchedules(updatedSchedules);
+    localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
   };
 
   function handleDeleteTask(uid) {
     const existingSchedules = JSON.parse(localStorage.getItem("schedules")) || [];
-    const updatedSchedules = existingSchedules.map(sch => ({
+    const updatedSchedules = existingSchedules.map((sch) => ({
       ...sch,
-      items: sch.items.filter(it => it.uid !== uid) || []
+      items: sch.items.filter((it) => it.uid !== uid) || [],
     }));
     localStorage.setItem("schedules", JSON.stringify(updatedSchedules));
-    setItems(prev => prev.filter(it => it.uid !== uid));
     setSchedules(updatedSchedules);
   }
 
   return (
-    <>    
+    <>
       {showInputForm && (
-        <InputSchedule showInputForm={showInputForm} setShowForm={setShowInputForm} stateItems={setSchedules} setConditionAlert={setConditionAlert} />
+        <InputSchedule
+          showInputForm={showInputForm}
+          setShowForm={setShowInputForm}
+          schedules={schedules}
+          setSchedules={setSchedules}
+          setConditionAlert={setConditionAlert}
+        />
       )}
 
       {showInputTask && (
@@ -60,33 +92,58 @@ export default function App() {
           date={date}
           showInputTask={showInputTask}
           setInputTask={setInputTask}
-          stateItems={setItems}
           setSchedules={setSchedules}
           setConditionAlert={setConditionAlert}
         />
       )}
 
       {decisionConditionAlert == "task" && (
-        <DecisionAlert message={"Are you sure?"} type={'task'} setDecisionConditionAlert={setDecisionConditionAlert} uid={uid} handleDeleteList={handleDeleteTask} setConditionAlert={setConditionAlert} />
+        <DecisionAlert
+          message={"Are you sure?"}
+          type={"task"}
+          setDecisionConditionAlert={setDecisionConditionAlert}
+          uid={uid}
+          handleDeleteList={handleDeleteTask}
+          setConditionAlert={setConditionAlert}
+        />
       )}
 
       {decisionConditionAlert == "schedule" && (
-        <DecisionAlert message={"Are you sure?"} type={'schedule'} setDecisionConditionAlert={setDecisionConditionAlert} uid={uid} handleDeleteList={handleDeleteList} setConditionAlert={setConditionAlert} />
+        <DecisionAlert
+          message={"Are you sure?"}
+          type={"schedule"}
+          setDecisionConditionAlert={setDecisionConditionAlert}
+          uid={uid}
+          handleDeleteList={handleDeleteList}
+          setConditionAlert={setConditionAlert}
+        />
       )}
 
       {conditionAlert == "success" && (
-        <Alert message={"Success!"} type={"success"} onClose={setConditionAlert} />
+        <Alert
+          message={"Success!"}
+          type={"success"}
+          onClose={setConditionAlert}
+        />
       )}
 
       {conditionAlert == "error" && (
-        <Alert message={"Please fill in all required fields."} type={"error"} onClose={setConditionAlert} />
+        <Alert
+          message={"Please fill in all required fields."}
+          type={"error"}
+          onClose={setConditionAlert}
+        />
       )}
 
       {conditionAlert == "max" && (
-        <Alert message={"Maximum schedule is 4."} type={"error"} onClose={setConditionAlert} />
+        <Alert
+          message={"Maximum schedule is 4."}
+          type={"error"}
+          onClose={setConditionAlert}
+        />
       )}
 
-      < Header />
+      <Header />
 
       <div className="controls size-full flex justify-end mb-8 pt-4 pr-3">
         <button
@@ -101,8 +158,10 @@ export default function App() {
         </button>
       </div>
 
-      <main className={`schedule-manager size-full mt-8 ${ScheduleEmptySty}`} role="main">
-
+      <main
+        className={`schedule-manager size-full mt-8 ${ScheduleEmptySty}`}
+        role="main"
+      >
         {isScheduleEmpty ? (
           <div className="size-fit flex justify-center items-center">
             <p className="text-center text-text-secondary font-[Montserrat] italic text-[1rem]">
@@ -113,7 +172,6 @@ export default function App() {
           <Schedule
             schedules={schedules}
             items={items}
-            setItems={setItems}
             handleContOpen={handleContOpen}
             setInputTask={setInputTask}
             setDate={setDate}
@@ -123,10 +181,9 @@ export default function App() {
             setUid={setUid}
           />
         )}
-        
       </main>
 
-      < Footer />
+      <Footer />
     </>
   );
 }

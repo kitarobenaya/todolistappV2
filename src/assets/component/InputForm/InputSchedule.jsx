@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function InputSchedule({showInputForm, setShowForm, stateItems, setConditionAlert}) {
+export default function InputSchedule({showInputForm, setShowForm, schedules, setSchedules, setConditionAlert}) {
     const [data, setData] = useState({
         uid: crypto.randomUUID(),
         date: "",
@@ -15,19 +15,14 @@ export default function InputSchedule({showInputForm, setShowForm, stateItems, s
         return;
     }
 
-    const existingData = JSON.parse(localStorage.getItem("schedules")) || [];
-
-    if(existingData.length === 4) {
+    if(schedules.length >= 4) {
         setConditionAlert('max');
         return;
     }
 
-    const newData = [...existingData, data];
-    localStorage.setItem("schedules", JSON.stringify(newData));
-
     setConditionAlert('success');
     setData({date: ""});
-    stateItems(prev => [...prev, data]);
+    setSchedules(prev => [...prev, data]);
     setShowForm(false);
     }
 
