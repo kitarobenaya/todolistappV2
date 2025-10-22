@@ -15,6 +15,11 @@ export default function InputSchedule({showInputForm, setShowForm, schedules, se
         return;
     }
 
+    if(schedules.find(sch => sch.date === data.date)) {
+        setConditionAlert('exist');
+        return;
+    }
+
     if(schedules.length >= 4) {
         setConditionAlert('max');
         return;

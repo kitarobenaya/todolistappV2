@@ -143,6 +143,14 @@ export default function App() {
         />
       )}
 
+      {conditionAlert == "exist" && (
+        <Alert
+          message={"Schedule already exists."}
+          type={"error"}
+          onClose={setConditionAlert}
+        />
+      )}
+
       <Header />
 
       <div className="controls size-full flex justify-end mb-8 pt-4 pr-3">
